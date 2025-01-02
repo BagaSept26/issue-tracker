@@ -1,23 +1,132 @@
+/* Reset CSS */
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
 body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #3498db; /* Accent color */
+}
+
+section {
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+#test-results{
+  margin-top: 20px;
+}
+#test-results ul{
+  list-style: none;
+  padding: 0;
+}
+#test-results li{
+    background-color: #ecf0f1;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+}
+
+h3 {
+  margin-bottom: 15px;
+  color: #3498db;
+}
+h2{
+    text-align: center;
+    color: #3498db;
+}
+
+
+code {
+  background-color: #f0f0f0;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+pre {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto; /* Enable horizontal scrolling if content is too wide */
+    white-space: pre-wrap;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+
+.border {
+  border: 1px solid #ddd;
   padding: 10px;
+  border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .issue {
-  margin: 20px;
-  padding: 5px;
-  width: 60%;
-  border: 2px solid black;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
 }
 
-.closed {
-  background-color: lightgrey;
+.issue:hover{
+ transform: scale(1.02)
 }
 
-.id {
-  font-size: 10.5px;
+.issue.closed {
+    background-color: #ecf0f1;
+}
+.issue h3 {
+    margin-bottom: 10px;
+    color: #3498db;
+}
+
+.issue p {
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
+
+.issue .id {
+  font-size: 0.8em;
+  color: #777;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  section,
+  .issue {
+    margin-left: 10px;
+     margin-right: 10px;
+    width: auto;
+    padding: 10px;
+  }
+  .issue {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px){
+    section{
+        padding: 10px;
+    }
+    code,pre {
+      font-size: 0.8em
+    }
 }

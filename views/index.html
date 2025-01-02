@@ -17,32 +17,31 @@
     <section style="margin: 0 50px;">
       <h3>Example <code>GET</code> usage</h3>
       <code>/api/issues/{project}</code><br>
-      <code>/api/issues/{project}?open=true&amp;assigned_to=Joe</code><br>
+      <code>/api/issues/{project}?open=true&assigned_to=Joe</code><br>
       <h3>Example return</h3>
       <pre>
-<code>[
-  { 
-    "_id": "5871dda29faedc3491ff93bb",
-    "issue_title": "Fix error in posting data",
-    "issue_text": "When we post data it has an error.",
-    "created_on": "2017-01-08T06:35:14.240Z",
-    "updated_on": "2017-01-08T06:35:14.240Z",
-    "created_by": "Joe",
-    "assigned_to": "Joe",
-    "open": true,
-    "status_text": "In QA"
-  },
-  ...
- ]
-</code>
+  <code>[
+    { 
+      "_id": "5871dda29faedc3491ff93bb",
+      "issue_title": "Fix error in posting data",
+      "issue_text": "When we post data it has an error.",
+      "created_on": "2017-01-08T06:35:14.240Z",
+      "updated_on": "2017-01-08T06:35:14.240Z",
+      "created_by": "Joe",
+      "assigned_to": "Joe",
+      "open": true,
+      "status_text": "In QA"
+    },
+    ...
+   ]
+  </code>
 </pre>
-    </section>
-    <hr style='margin: 0 50px'>
-    <section id='testui' style='margin-left: 50px;'>
-      <h3>Examples</h3>
-      Go to <a href='/api/issues/apitest/'><code>/api/issues/apitest/</code></a>  project
-      <h2 style="text-align: left">API Tests</h2>
-      <h3>Submit issue on <i>apitest</i></h3>
+   
+    <h2 style="text-align: left">API Tests</h2>
+        <!-- Perubahan: Tempat untuk menampilkan hasil test-->
+        <div id="test-results"></div>
+        
+       <h3>Submit issue on <i>apitest</i></h3>
       <form id="testForm" class="border">
         <input type="text" name="issue_title" placeholder="*Title" style="width: 100px" required=''><br>
         <textarea type="text" name="issue_text" placeholder="*Text" style="width: 100px" required=''></textarea><br>
@@ -69,47 +68,75 @@
       </form>
       <code id='jsonResult'></code>
     </section>
-    <hr style='margin: 50px; margin-top: 200px'>
+       
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
-    <script>
-      $(function() {
-        $('#testForm').submit(function(e) {
-          $.ajax({
-            url: '/api/issues/apitest',
-            type: 'post',
-            data: $('#testForm').serialize(),
-            success: function(data) {
-              $('#jsonResult').text(JSON.stringify(data));
-            }
+     <script>
+     $(function() {
+       $('#testForm').submit(function(e) {
+         $.ajax({
+           url: '/api/issues/apitest',
+           type: 'post',
+           data: $('#testForm').serialize(),
+           success: function(data) {
+             $('#jsonResult').text(JSON.stringify(data));
+           }
+         });
+         e.preventDefault();
+       });
+       $('#testForm2').submit(function(e) {
+         $.ajax({
+           url: '/api/issues/apitest',
+           type: 'put',
+           data: $('#testForm2').serialize(),
+           success: function(data) {
+             $('#jsonResult').text(JSON.stringify(data));
+           }
+         });
+         e.preventDefault();
+       });
+       $('#testForm3').submit(function(e) {
+         $.ajax({
+           url: '/api/issues/apitest',
+           type: 'delete',
+           data: $('#testForm3').serialize(),
+           success: function(data) {
+             $('#jsonResult').text(JSON.stringify(data));
+           }
+         });
+         e.preventDefault();
+       });
+     });
+  </script>
+      <!-- Perubahan: Menampilkan hasil test -->
+  <script>
+      const testResults = []; // Ambil data dari server
+
+       fetch('/')
+       .then(response => response.json())
+         .then(data => {
+        if (data && data.tests && data.tests.length > 0) {
+         const testResults = data.tests;
+         
+          const resultsDiv = document.getElementById('test-results');
+            const resultsList = document.createElement('ul');
+
+             testResults.forEach(function(test) {
+               const listItem = document.createElement('li');
+               listItem.textContent = `${test.context} ${test.title} : ${test.state}`;
+               resultsList.appendChild(listItem);
+             });
+           resultsDiv.appendChild(resultsList);
+         } else {
+           console.log('No Test Run');
+           document.getElementById('test-results').innerHTML = '<p>No Test Run</p>';
+         }
+       })
+         .catch(error => {
+           console.error("Error fetching test results:", error)
           });
-          e.preventDefault();
-        });
-        $('#testForm2').submit(function(e) {
-          $.ajax({
-            url: '/api/issues/apitest',
-            type: 'put',
-            data: $('#testForm2').serialize(),
-            success: function(data) {
-              $('#jsonResult').text(JSON.stringify(data));
-            }
-          });
-          e.preventDefault();
-        });
-        $('#testForm3').submit(function(e) {
-          $.ajax({
-            url: '/api/issues/apitest',
-            type: 'delete',
-            data: $('#testForm3').serialize(),
-            success: function(data) {
-              $('#jsonResult').text(JSON.stringify(data));
-            }
-          });
-          e.preventDefault();
-        });
-      });
-   </script>
+  </script>
   </body>
 </html>
